@@ -1,0 +1,46 @@
+from typing import List
+from collections import defaultdict
+
+class Solution:
+    def getSignature(self, s: str) -> str: # create a signature for each string
+        count = [0] * 26 # create a count array for each letter
+        for c in s: # count the number of each letter
+            count[ord(c) - ord('a')] += 1 # This line counts the number of each letter in the string
+
+        result = [] # creates an array to store signature as a result
+        for i in range(26): # goes throigh every letter in the alphabet loop over 0 - 25
+            if count[i] != 0: # Checks whether this letter actually appears in the word. We checked above to see if that acount goes up for that letter
+                result.extend([chr(i + ord('a')), str(count[i])])  # Appends this letter to the result array. so eat ['e', 1, a, 1. t. 5]
+
+        return ''.join(result) # joins the result array into a string instead of being like that result instead above it will look like "a1e1t1" we do this so that we can use it as a key in a dictionary
+
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]: # here we take the list of strings and out output will be a list of of groups
+        result = [] # preps the final answer container 
+        groups = defaultdict(list) # groups the strings into a dictionary with the signature as the key and the strings as the value
+#{
+#  "a1e1t1": ["eat", "tea", "ate"],
+# "a1n1t1": ["tan", "nat"],
+#  "a1b1t1": ["bat"]
+# }
+        for s in strs: # goes through every string in the list
+            groups[self.getSignature(s)].append(s)
+#	•	Uses the signature as the dictionary key.
+#	•	Appends the original string into that group’s list.
+#	•	"eat" goes into groups["a1e1t1"]
+#	•	"tea" also goes into groups["a1e1t1"]
+
+        result.extend(groups.values()) # extends the result with the values of the groups dictionary
+# [["eat","tea","ate"], ["tan","nat"], ["bat"]]
+        return result # returns the result
+
+#   from collections import defaultdict # skips append from e,1,a,1,t,1, to  = eat etc
+#   class Solution:
+#       def groupAnagrams(self, strs):
+#           mpp = defaultdict(list)
+#
+#       for s in strs:
+#           copy = "".join(sorted(s))
+#           mpp[copy].append(s)
+#
+#       return list(mpp.values())
+#
