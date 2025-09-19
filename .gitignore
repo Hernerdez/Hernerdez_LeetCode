@@ -1,0 +1,8 @@
+# macOS
+.DS_Store
+
+# Project-specific
+CLAUDE.md
+
+# Environment variables
+.env
